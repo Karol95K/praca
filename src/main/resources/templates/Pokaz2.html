@@ -9,14 +9,13 @@
 <body>
 <p align="center"> <h2>Zbiory księgarni</h2></p> <br>
 <table class="table table-striped">
-    <tr><th>Tytuł</th><th>Rok wydania</th><th>Numer ISBN</th><th>Liczba egzemplarzy</th><th>Cena za książkę [zł]<th>Imie</th><th>Kasuj ?</th><th>aktualizuj</th></tr>
+    <tr><th>Tytuł</th><th>Rok wydania</th><th>Numer ISBN</th><th>Liczba egzemplarzy</th><th>Cena za książkę [zł]<th>Kasuj ?</th><th>aktualizuj</th></tr>
     <tr th:each="wpis: ${book}" >
         <td th:text="${wpis.tytul}">Tytuł</td>
         <td th:text="${wpis.rokWydania}">Rok wydania</td>
         <td th:text="${wpis.isbn}">Numer ISBN</td>
         <td th:text="${wpis.liczbaEgzemplarzy}">Liczba egzemplarzy</td>
         <td th:text="${wpis.cenaZaKsiazke}">Cena za książkę</td>
-        <td th:text="${wpis.imie}">Imie</td>
         <td><a href="#" th:href="@{/kasuj(id_ksiazka=${wpis.id_ksiazka})}" class="btn btn-danger" >
             <i class="fa fa-trash-o fa-lg" ></i>Kasuj</a></td>
         <td><a href="#" th:href="@{/przekieruj(id_ksiazka=${wpis.id_ksiazka})}" class="btnbtn-primary" >
