@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="pl">
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<p align="center"> <h2>Dane autora</h2></p> <br>
+<table class="table table-striped">
+    <tr><th>Imie</th><th>Nazwisko</th><th>Liczba publikacji</th><th>Numer telefonu</th></tr>
+    <tr th:object="${author}">
+        <td th:text="${author.imie}">Imie</td>
+        <td th:text="${author.nazwisko}">Nazwisko</td>
+        <td th:text="${author.liczbaPublikacji}">Liczba publikacji</td>
+        <td th:text="${author.telefonAutora}">Numer telefonu</td>
+
+    </tr>
+</table>
+
+
+</body>
+</html>

@@ -34,9 +34,13 @@ public class BookController {
             @RequestParam("liczbaEgzemplarzy") Integer liczbaEgzemplarzy,
             @RequestParam("cenaZaKsiazke") Integer cenaZaKsiazke,
             @RequestParam("imie") String imie,
+            @RequestParam ("nazwisko") String nazwisko,
+            @RequestParam ("liczbaPublikacji") Integer liczbaPublikacji,
+            @RequestParam ("telefonAutora") Integer telefonAutora,
             Model model)throws Exception{
         Book book = new Book (tytul,rokWydania, isbn, liczbaEgzemplarzy, cenaZaKsiazke);
-        Author author= new Author(imie, "Kowalski", 3, 51232323);
+        Author author= new Author(imie, nazwisko, liczbaPublikacji,telefonAutora);
+
         System.out.println(book);
         System.out.println(author);
         author.addBook(book);
@@ -45,9 +49,22 @@ public class BookController {
 
         model.addAttribute("book", book);
         model.addAttribute("author",author);
+       // dodajemydane_2(author, model);
         System.out.println(book);
         System.out.println(author);
+
         return "Widok";
+    }
+
+    @RequestMapping ("/autor")
+    public String dodajemydane_2( @RequestParam("id_autor") Integer id_autor, Model model)throws Exception{
+        System.out.println(authorRepo.findById(id_autor));
+        //Author author = new Author("Wiechu","szczesny",32,2124123);
+        model.addAttribute("author",authorRepo.getOne(id_autor));//authorRepo.findById(id_autor)
+        //authorRepo.getOne(id_autor);
+
+
+        return "Pokaz2_1";
     }
 
     @RequestMapping("/form")
@@ -121,10 +138,8 @@ public class BookController {
     }
 
     @RequestMapping ("/wyszukaj" )
-    public String wyszukaj(@RequestParam ("kryterium" ) Integer kryterium ,
-                           Model model){
-        model.addAttribute( "book",
-                bookRepo.findAllByrokWydania(kryterium)) ;
+    public String wyszukaj(@RequestParam ("kryterium" ) Integer kryterium , Model model){
+        model.addAttribute( "book", bookRepo.findAllByrokWydania(kryterium)) ;
         return "pokaz2";
     }
 }

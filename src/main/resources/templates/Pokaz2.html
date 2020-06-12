@@ -9,21 +9,25 @@
 <body>
 <p align="center"> <h2>Zbiory księgarni</h2></p> <br>
 <table class="table table-striped">
-    <tr><th>Tytuł</th><th>Rok wydania</th><th>Numer ISBN</th><th>Liczba egzemplarzy</th><th>Cena za książkę [zł]<th>Kasuj ?</th><th>aktualizuj</th></tr>
+    <tr><th>Tytuł</th><th>Rok wydania</th><th>Numer ISBN</th><th>Liczba egzemplarzy</th><th>Cena za książkę [zł]</th><th>Autor</th><th>Kasuj ?</th><th>aktualizuj</th></tr>
     <tr th:each="wpis: ${book}" >
         <td th:text="${wpis.tytul}">Tytuł</td>
         <td th:text="${wpis.rokWydania}">Rok wydania</td>
         <td th:text="${wpis.isbn}">Numer ISBN</td>
         <td th:text="${wpis.liczbaEgzemplarzy}">Liczba egzemplarzy</td>
         <td th:text="${wpis.cenaZaKsiazke}">Cena za książkę</td>
+
+        <td><a href="#" th:href="@{/autor(id_autor=${wpis.id_ksiazka})}" class="btn btn-light" >
+            <i class="fa fa-trash-o fa-lg" ></i>Informacje o autorze</a></td>
         <td><a href="#" th:href="@{/kasuj(id_ksiazka=${wpis.id_ksiazka})}" class="btn btn-danger" >
             <i class="fa fa-trash-o fa-lg" ></i>Kasuj</a></td>
         <td><a href="#" th:href="@{/przekieruj(id_ksiazka=${wpis.id_ksiazka})}" class="btnbtn-primary" >
             <i class="fa fa-trash-o fa-lg" ></i>Aktualizuj </a></td>
 
-
     </tr>
+
 </table>
+
 
 <table class="table table-striped">
     <tr><td> Wyszukaj książkę wg roku wydania</td>
