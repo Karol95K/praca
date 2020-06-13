@@ -50,6 +50,7 @@ public class Book {
         this.cenaZaKsiazke = cenaZaKsiazke;
     }
 
+
     public Set<Author> getAuthors() {
         return authors;
     }

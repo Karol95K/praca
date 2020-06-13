@@ -4,10 +4,7 @@ package pl.horyzont.praca.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.horyzont.praca.Entity.Author;
 import pl.horyzont.praca.Entity.Book;
 import pl.horyzont.praca.Repository.AuthorRepo;
@@ -98,14 +95,19 @@ public class BookController {
         for (Book book : bookRepo.findAll()) {
             System.out.println(book);
         }
+
         model.addAttribute("book", bookRepo.findAll());
+        model.addAttribute("author",authorRepo.findAll());
         return "Pokaz2";
     }
 
 
     @RequestMapping (value="/kasuj")
-    public String kasuj (@RequestParam ("id_ksiazka") Integer id_ksiazka, Model model){
-        bookRepo.deleteById(id_ksiazka);
+    public String kasuj (@RequestParam ("id_autor") Integer id_autor, Model model){
+        Author author=authorRepo.getOne(id_autor);
+        Book book=bookRepo.getOne(id_autor);
+        author.removeBook(book);
+        bookRepo.deleteById(id_autor);
 
         model.addAttribute("book", bookRepo.findAll());
         return "Pokaz2";
@@ -116,8 +118,11 @@ public class BookController {
             @RequestParam("id_ksiazka") Integer id_ksiazka, Model model
     )
             throws Exception {
-        System.out.println(bookRepo.findById(id_ksiazka));
+        //System.out.println(bookRepo.findById(id_ksiazka));
         model.addAttribute("book", bookRepo.findById(id_ksiazka));
+        model.addAttribute("author", authorRepo.getOne(id_ksiazka));
+        //System.out.println(authorRepo);
+
         return "Aktualizuj";
     }
 
@@ -129,11 +134,24 @@ public class BookController {
             @RequestParam("isbn") Long isbn,
             @RequestParam("liczbaEgzemplarzy") Integer liczbaEgzemplarzy,
             @RequestParam("cenaZaKsiazke") Integer cenaZaKsiazke,
+            @RequestParam("imie") String imie,
+            @RequestParam ("nazwisko") String nazwisko,
+            @RequestParam ("liczbaPublikacji") Integer liczbaPublikacji,
+            @RequestParam ("telefonAutora") Integer telefonAutora,
             Model model)throws Exception{
         Book book = new Book (id_ksiazka, tytul,rokWydania, isbn, liczbaEgzemplarzy, cenaZaKsiazke);
-        System.out.println(book);
+        Author author= new Author(id_ksiazka,imie, nazwisko, liczbaPublikacji,telefonAutora);
+
+        author.addBook(book);
         bookRepo.save(book);
+        authorRepo.save(author);
+
         model.addAttribute("book", book);
+        model.addAttribute("author",author);
+        // dodajemydane_2(author, model);
+        System.out.println(author);
+        System.out.println(book);
+
         return "Widok";
     }
 

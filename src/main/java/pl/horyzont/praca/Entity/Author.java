@@ -13,7 +13,7 @@ public class Author {
     private Integer liczbaPublikacji;
     private Integer telefonAutora;
 
-    @ManyToMany (cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToMany (cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable (
             name = "authors_books",
             joinColumns = @JoinColumn (name = "author_id"),
@@ -36,6 +36,14 @@ public class Author {
     }
 
     public Author(String imie, String nazwisko, Integer liczbaPublikacji, Integer telefonAutora) {
+        this.imie = imie;
+        this.nazwisko = nazwisko;
+        this.liczbaPublikacji = liczbaPublikacji;
+        this.telefonAutora = telefonAutora;
+    }
+
+    public Author(Integer id_autor, String imie, String nazwisko, Integer liczbaPublikacji, Integer telefonAutora) {
+        this.id_autor = id_autor;
         this.imie = imie;
         this.nazwisko = nazwisko;
         this.liczbaPublikacji = liczbaPublikacji;
