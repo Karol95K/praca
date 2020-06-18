@@ -21,6 +21,8 @@ public class Author {
     )
     private Set<Book> books = new HashSet<>();
 
+    @Transient
+    public Set <Integer> index_autor = new HashSet<>();
 
     public void addBook (Book book){
         this.books.add(book);
@@ -50,12 +52,28 @@ public class Author {
         this.telefonAutora = telefonAutora;
     }
 
+    public Set<Integer> getIndex_autor() {
+        return index_autor;
+    }
+
+    public void setIndex_autor(Set<Integer> index_autor) {
+        this.index_autor = index_autor;
+    }
+
     public Set<Book> getBooks() {
         return books;
     }
 
     public void setBooks(Set<Book> books) {
         this.books = books;
+    }
+
+    public Integer getId_autor() {
+        return id_autor;
+    }
+
+    public void setId_autor(Integer id_autor) {
+        this.id_autor = id_autor;
     }
 
     public String getImie() {

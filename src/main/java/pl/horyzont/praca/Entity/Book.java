@@ -1,10 +1,10 @@
 package pl.horyzont.praca.Entity;
 
+import org.springframework.lang.NonNull;
+
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 public class Book {
@@ -19,6 +19,47 @@ public class Book {
 
     @ManyToMany (mappedBy = "books")
     private Set<Author> authors = new HashSet<>();
+
+   // @Transient
+   // public Set <Integer> index_autor = new HashSet<>();
+
+    @ElementCollection()
+    @CollectionTable(name="Map_books_authors", joinColumns=@JoinColumn(name="Map_id"))
+    @MapKeyColumn (name = "Key_author_Id")
+    @Column (name = "Value_book_Id")
+    private  Map<Integer, Integer> book_map = new TreeMap<Integer, Integer>();
+
+    public  void setBook_map(Integer klucz_idAutor, Integer wartosc_idKsiazka) {
+        book_map.put(klucz_idAutor, wartosc_idKsiazka);
+    }
+
+
+    public  Map<Integer, Integer> getBook_map() {
+        return book_map;
+    }
+
+    public  Set<Integer> getKeysByValue( Integer value) {
+        Set<Integer> keys = new HashSet<Integer>();
+        for (Map.Entry<Integer, Integer> entry : book_map.entrySet()) {
+            if (Objects.equals(value, entry.getValue())) {
+                keys.add(entry.getKey());
+            }
+        }
+        return keys;
+    }
+
+    public  List<Object> getKeysFromValue( Object value){
+        List <Object>list = new ArrayList<Object>();
+        for(Object o:book_map.keySet()){
+            if(book_map.get(o).equals(value)) {
+                list.add(o);
+            }
+        }
+        return list;
+    }
+
+
+
 
 
     public Book() {
@@ -51,6 +92,7 @@ public class Book {
     }
 
 
+
     public Set<Author> getAuthors() {
         return authors;
     }
@@ -58,6 +100,7 @@ public class Book {
     public void setAuthors(Set<Author> authors) {
         this.authors = authors;
     }
+
 
     public Integer getId_ksiazka() {
         return id_ksiazka;
@@ -103,6 +146,8 @@ public class Book {
         this.cenaZaKsiazke = cenaZaKsiazke;
     }
 
+
+
     @Override
     public String toString() {
         return "Book{" +
@@ -112,7 +157,10 @@ public class Book {
                 ", isbn=" + isbn +
                 ", liczbaEgzemplarzy=" + liczbaEgzemplarzy +
                 ", cenaZaKsiazke=" + cenaZaKsiazke +
+                ", book_map=" + book_map +
                 ", authors=" + authors +
                 '}';
     }
+
+
 }

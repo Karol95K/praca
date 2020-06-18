@@ -2,31 +2,14 @@
 <html lang="pl" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Wstaw książkę</title>
+    <title>Dopisz autora</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
-<form action="http://www.localhost:8080/dodaj">
+<form action="http://www.localhost:8080/dodaj_autora"   ><!--action="http://www.localhost:8080/dodaj_autor"  th:object="{book}"-->
     <table>
         <tr>
-            <td>Podaj tytuł</td>
-            <td><input name ="tytul"></td>
-        </tr>
-        <tr>
-            <td>Podaj rok wydania książki</td>
-            <td><input name ="rokWydania"></td>
-        </tr>
-        <tr>
-            <td>Podaj numer ISBN</td>
-            <td><input name ="isbn"></td>
-        </tr>
-        <tr>
-            <td>Podaj liczbę dostępnych egzemplarzy</td>
-            <td><input name ="liczbaEgzemplarzy"></td>
-        </tr>
-        <tr>
-            <td>Podaj cene za książkę</td>
-            <td><input name ="cenaZaKsiazke"></td>
+            <td><input name="id_ksiazka"  hidden th:value="*{book.id_ksiazka}" ></td>
         </tr>
         <tr>
             <td>Podaj imię autora</td>

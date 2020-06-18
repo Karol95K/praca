@@ -7,14 +7,14 @@
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
-<p align="center"> <h2>Dane autora</h2></p> <br>
+<p> <h2 align="center">Dane autora/ów</h2></p> <br>
 <table class="table table-striped">
     <tr><th>Imie</th><th>Nazwisko</th><th>Liczba publikacji</th><th>Numer telefonu</th></tr>
-    <tr th:object="${author}">
-        <td th:text="${author.imie}">Imie</td>
-        <td th:text="${author.nazwisko}">Nazwisko</td>
-        <td th:text="${author.liczbaPublikacji}">Liczba publikacji</td>
-        <td th:text="${author.telefonAutora}">Numer telefonu</td>
+    <tr th:each ="wpis: ${author}">
+        <td th:text="${wpis.imie}">Imie</td>
+        <td th:text="${wpis.nazwisko}">Nazwisko</td>
+        <td th:text="${wpis.liczbaPublikacji}">Liczba publikacji</td>
+        <td th:text="${wpis.telefonAutora}">Numer telefonu</td>
     </tr>
 </table>
 
