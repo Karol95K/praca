@@ -118,7 +118,7 @@ public class BookController {
 
     @RequestMapping("/autor")
     public String dodajemydane_2(@RequestParam("id_ksiazka") Integer id_ksiazka, Model model) throws Exception {
-        System.out.println(bookRepo.findById(id_ksiazka));
+        System.out.println(bookRepo.getOne(id_ksiazka)); //findById(id_ksiazka)
         Book book = bookRepo.getOne(id_ksiazka);
 
         Set<Integer> authors_id = book.getKeysByValue(id_ksiazka);
@@ -126,26 +126,10 @@ public class BookController {
 
         System.out.println("Jakich autorow mamy" + authorRepo.findAllById(authors_id));
         model.addAttribute("author", authorRepo.findAllById(authors_id));
+        model.addAttribute("book", bookRepo.getOne(id_ksiazka)); //findById(id_ksiazka).get()
 
         return "Pokaz2_1";
     }
-
-
-    @RequestMapping("/form")
-    String formularz() {
-        return "Formularz";
-    }
-
-    @RequestMapping("/home")
-    public String home(Model model) throws Exception {
-        int i = 0;
-        for (Book book : bookRepo.findAll()) {
-            System.out.println(book);
-        }
-        model.addAttribute("book", bookRepo.findAll());
-        return "home";
-    }
-
 
     @RequestMapping("/pokaz2")
     public String pokaz2(Model model) throws Exception {
@@ -172,40 +156,88 @@ public class BookController {
         int set_size = authors_id.size();
         int[] tab = new int[set_size];
         System.out.println("Rozmiar tablicy: " + set_size);
-        int index = 0;
-        for (Integer i : authors_id) {
-            tab[index++] = i;
+        if(set_size !=0) {
+            int index = 0;
+            for (Integer i : authors_id) {
+                tab[index++] = i;
+            }
+
+            int a = 0;
+            for (Integer j : tab) {
+                Author author = authorRepo.getOne(tab[a]);
+                System.out.println("Usuwamy autora o id " + tab[a]);//a++
+                author.removeBook(book);
+                book.getBook_map().remove(tab[a]);
+                authorRepo.deleteById(tab[a++]);
+                System.out.println("Sprawdzamy mape autor(key)-book(value): " + book.getBook_map());
+            }
         }
 
-        int a = 0;
-        for (Integer j : tab) {
-            Author author = authorRepo.getOne(tab[a]);
-            System.out.println("Usuwamy autora o id " + tab[a++]);
-            author.removeBook(book);
-        }
-
-
-        //author.removeBook(book);
         bookRepo.deleteById(id_ksiazka);
 
         model.addAttribute("book", bookRepo.findAll());
         return "Pokaz2";
     }
 
-    @RequestMapping("/przekieruj")
+    @RequestMapping(value = "/kasuj_autor")
+    public String kasuj_autor(
+            @RequestParam("id_ksiazka") Integer id_ksiazka,
+            @RequestParam("id_autor") Integer id_autor,
+            Model model) {
+
+        Author author=authorRepo.getOne(id_autor);
+        Book book = bookRepo.getOne(id_ksiazka);
+
+         System.out.println("Usuwamy autora o id " + id_autor +"jego dane"+authorRepo.getOne(id_autor));
+           // author.removeBook(book);
+
+
+         authorRepo.deleteById(id_autor);
+        book.getBook_map().remove(id_autor);
+        System.out.println("Sprawdzamy mape autor(key)-book(value): " + book.getBook_map());
+        bookRepo.save(book);
+        /////authorRepo.save(author);
+
+        System.out.println("Zbiory ksiazki"+bookRepo.findAll());
+       // System.out.println("Usuwamy autora o id " + id_autor +"jego dane"+authorRepo.getOne(id_autor));
+
+        Set<Integer> authors_id = book.getKeysByValue(id_ksiazka);
+        System.out.println("Takie id maja autorzy" + authors_id);
+        System.out.println("Sprawdzmy" + bookRepo.getOne(id_ksiazka));
+
+        model.addAttribute("book", bookRepo.getOne(id_ksiazka));
+        model.addAttribute("author",authorRepo.findAllById(authors_id));  //
+        return "Pokaz2_1";
+    }
+
+    @RequestMapping(value="/przekieruj")
     public String przekieruj(
             @RequestParam("id_ksiazka") Integer id_ksiazka, Model model
     )
             throws Exception {
         //System.out.println(bookRepo.findById(id_ksiazka));
-        model.addAttribute("book", bookRepo.findById(id_ksiazka));
-        model.addAttribute("author", authorRepo.getOne(id_ksiazka));
+        model.addAttribute("book", bookRepo.getOne(id_ksiazka));  //findById(id_ksiazka)
+      ////  model.addAttribute("author", authorRepo.getOne(id_ksiazka));
         //System.out.println(authorRepo);
 
         return "Aktualizuj";
     }
 
-    @RequestMapping("/aktualizuj")
+    @RequestMapping("/przekieruj_autor")
+    public String przekieruj2(
+            @RequestParam("id_autor") Integer id_autor,
+            @RequestParam("id_ksiazka") Integer id_ksiazka, Model model
+    )
+            throws Exception {
+        //System.out.println("SDASDASD"+bookRepo.findById(id_ksiazka).get());
+        model.addAttribute("book",bookRepo.getOne(id_ksiazka));
+        model.addAttribute("author", authorRepo.getOne(id_autor));
+        //System.out.println(authorRepo);
+
+        return "Aktualizuj_autor";
+    }
+
+    @RequestMapping(value="/aktualizuj")
     public String update(
             @RequestParam("id_ksiazka") Integer id_ksiazka,
             @RequestParam("tytul") String tytul,
@@ -213,13 +245,65 @@ public class BookController {
             @RequestParam("isbn") Long isbn,
             @RequestParam("liczbaEgzemplarzy") Integer liczbaEgzemplarzy,
             @RequestParam("cenaZaKsiazke") Integer cenaZaKsiazke,
+            Model model) throws Exception {
+        Book book = new Book(id_ksiazka, tytul, rokWydania, isbn, liczbaEgzemplarzy, cenaZaKsiazke);
+        //Author author = new Author(id_ksiazka, imie, nazwisko, liczbaPublikacji, telefonAutora);
+
+        Set <Integer> authors_id = bookRepo.getOne(id_ksiazka).getKeysByValue(id_ksiazka);
+        System.out.println("Takie id maja autorzy" + authors_id);
+
+        List<Integer> mainList = new ArrayList<Integer>();
+        mainList.addAll(authors_id);
+
+        System.out.println("Jakich autorow mamy" + authorRepo.findAllById(authors_id));
+        Set<Author> foo = new HashSet<Author>(authorRepo.findAllById(mainList));
+        book.setAuthors(foo);
+        System.out.println("Book"+book);
+
+        int set_size = authors_id.size();
+        int[] tab = new int[set_size];
+        System.out.println("Rozmiar tablicy: " + set_size);
+            int index = 0;
+            for (Integer i : authors_id) {
+                tab[index++] = i;
+            }
+
+            int index2 =0;
+            for (int a:tab)
+            {        book.setBook_map(tab[index2++],id_ksiazka);
+            }
+
+        System.out.println("Book222"+book);
+
+
+        //author.addBook(book);
+        bookRepo.save(book);
+        //authorRepo.save(author);
+
+        model.addAttribute("book", book);
+        //model.addAttribute("author", author);
+        // dodajemydane_2(author, model);
+       // System.out.println(author);
+        System.out.println(book);
+
+        return "Widok";
+    }
+
+    @RequestMapping("/aktualizuj_autor")
+    public String update_author(
+            @RequestParam("id_autor") Integer id_autor,
+            @RequestParam("id_ksiazka") Integer id_ksiazka,
             @RequestParam("imie") String imie,
             @RequestParam("nazwisko") String nazwisko,
             @RequestParam("liczbaPublikacji") Integer liczbaPublikacji,
             @RequestParam("telefonAutora") Integer telefonAutora,
             Model model) throws Exception {
-        Book book = new Book(id_ksiazka, tytul, rokWydania, isbn, liczbaEgzemplarzy, cenaZaKsiazke);
-        Author author = new Author(id_ksiazka, imie, nazwisko, liczbaPublikacji, telefonAutora);
+        Author author = new Author(id_autor, imie, nazwisko, liczbaPublikacji, telefonAutora);
+        Book book= bookRepo.getOne(id_ksiazka);
+        //book.getAuthors();
+        //book.ge
+        //System.out.println("Dodanie autorow");
+        //book.getBook_map();
 
         author.addBook(book);
         bookRepo.save(book);
@@ -250,4 +334,20 @@ public class BookController {
         model.addAttribute("book", bookRepo.findAll());
         return "Pokaz";
     }
+
+    @RequestMapping("/home")
+    public String home(Model model) throws Exception {
+        int i = 0;
+        for (Book book : bookRepo.findAll()) {
+            System.out.println(book);
+        }
+        model.addAttribute("book", bookRepo.findAll());
+        return "home";
+    }
+
+    @RequestMapping("/form")
+    String formularz() {
+        return "Formularz";
+    }
+
 }

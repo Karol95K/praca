@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head lang="pl">
     <meta charset="UTF-8">
-    <title>Aktualizuj</title>
+    <title>Aktualizuj informacje o książce</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
@@ -28,22 +28,6 @@
             <td>Podaj cene za książkę</td>
             <td><input name ="cenaZaKsiazke" th:field="*{book.cenaZaKsiazke}">
                 <input type="hidden" name="id_ksiazka" th:field="*{book.id_ksiazka}"></td>
-        </tr>
-        <tr>
-            <td>Podaj imię autora</td>
-            <td><input name ="imie" th:field="*{author.imie}"></td>
-        </tr>
-        <tr>
-            <td>Podaj nazwisko autora</td>
-            <td> <input name="nazwisko" th:field="*{author.nazwisko}"></td>
-        </tr>
-        <tr>
-            <td>Podaj liczbę publikacji autora</td>
-            <td><input name="liczbaPublikacji" th:field="*{author.liczbaPublikacji}"></td>
-        </tr>
-        <tr>
-            <td>Podaj numer telefonu do autora</td>
-            <td><input name="telefonAutora" th:field="*{author.telefonAutora}"></td>
         </tr>
         <tr>
             <td colspan="1">

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Dodane książki</title>
+
 </head>
 <body>
 Dodałeś następujące książki:
@@ -10,12 +11,12 @@ Dodałeś następujące książki:
 <span th:text="${book}" >...</span><br>
 
 <a href="#" th:href="@{/dodaj_autor(id_ksiazka=${book.id_ksiazka})}" class="btn btn-danger" >
-    <i class="fa fa-trash-o fa-lg" ></i>Dodaj kolejnego autora do książki</a>
+    <i class="fa fa-trash-o fa-lg" ></i><b>Dodaj kolejnego autora do książki</b></a>
 <br>
 <a href="#" th:href="@{/pokaz2}" class="btn btn-primary" >
-    <i class="fa fa-trash-o fa-lg" ></i>Sprawdź dostępne zbiory </a>
+    <i class="fa fa-trash-o fa-lg" ></i><b>Sprawdź dostępne zbiory</b> </a>
 <br>
 <a href="#" th:href="@{/form}" class="btn btn-primary" >
-    <i class="fa fa-trash-o fa-lg" ></i>Dodaj kolejną książkę</a>
+    <i class="fa fa-trash-o fa-lg" ></i><b>Dodaj kolejną książkę</b></a>
 </body>
 </html>
