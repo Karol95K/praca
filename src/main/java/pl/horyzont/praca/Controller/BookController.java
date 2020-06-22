@@ -41,13 +41,13 @@ public class BookController {
             Model model) throws Exception {
         Book book = new Book(tytul, rokWydania, isbn, liczbaEgzemplarzy, cenaZaKsiazke);
         Author author = new Author(imie, nazwisko, liczbaPublikacji, telefonAutora);
-        Author author2 = new Author("Jaś", "Wojtaszek", 22, 11);
+       // Author author2 = new Author("Jan", "Wojtaszek", 22, 11);
 
 
         author.addBook(book);
-        author2.addBook(book);
+        //author2.addBook(book);
         authorRepo.save(author);
-        authorRepo.save(author2);
+        //authorRepo.save(author2);
         bookRepo.save(book);
 
 
@@ -62,7 +62,7 @@ public class BookController {
         model.addAttribute("author", author);
 
         book.setBook_map(author.getId_autor(), book.getId_ksiazka());
-        book.setBook_map(author2.getId_autor(), book.getId_ksiazka());
+        //book.setBook_map(author2.getId_autor(), book.getId_ksiazka());
         System.out.println("To jest mapa" + book.getBook_map());
         bookRepo.save(book); ///
         model.addAttribute("book", book); ////
